@@ -1,9 +1,9 @@
 module Language.BabyOWL.Syntax where
 
-import Language.BabyOWL.Token (Ident (..))
+import Language.BabyOWL.Data (Ident)
 
 data Declaration
-    = Subclass Ident Class
+    = Subclass Ident ClassExp
     | Subrelation Ident Ident
     | Instance Ident
     | Disjoint [Ident]
@@ -12,12 +12,12 @@ data Declaration
     | Transitive Ident
     deriving Show
 
-data Class
-    = Union Class Class
-    | Intersection Class Class
-    | RelationExists Ident Class
-    | RelationAll Ident Class
-    | Complement Class
+data ClassExp
+    = Union ClassExp ClassExp
+    | Intersection ClassExp ClassExp
+    | RelationExists Ident ClassExp
+    | RelationAll Ident ClassExp
+    | Complement ClassExp
     | LitThing
     | LitNothing
     | Literal Ident

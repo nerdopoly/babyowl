@@ -1,8 +1,11 @@
 {
-module Language.BabyOWL.Parser (parseTokens) where
+module Language.BabyOWL.Parser (parse) where
 
-import Language.BabyOWL.Token
+import Language.BabyOWL.Data (Ident)
 import Language.BabyOWL.Syntax
+
+import Language.BabyOWL.Parser.Lexer (alexScanTokens)
+import Language.BabyOWL.Parser.Token (Token (..))
 }
 
 %name parseTokens
@@ -50,24 +53,24 @@ list :: { [Ident] }
     : IDENT             { [$1] }
     | IDENT ',' list    { $1:$3 }
 
-term :: { Class }
+term :: { ClassExp }
     : union_term    { $1 }
 
-union_term :: { Class }
+union_term :: { ClassExp }
     : union_term '⊔' intersection_term  { Union $1 $3 }
     | intersection_term                 { $1 }
 
-intersection_term :: { Class }
+intersection_term :: { ClassExp }
     : intersection_term '⊓' prefix_term { Intersection $1 $3 }
     | prefix_term                       { $1 }
 
-prefix_term :: { Class }
+prefix_term :: { ClassExp }
     : '∃' IDENT ':' prefix_term { RelationExists $2 $4 }
     | '∀' IDENT ':' prefix_term { RelationAll $2 $4 }
     | '¬' prefix_term           { Complement $2 }
     | literal_term              { $1 }
 
-literal_term :: { Class }
+literal_term :: { ClassExp }
     : '(' term ')'  { $2 }
     | IDENT         { Literal $1 }
     | '⊤'           { LitThing }
@@ -76,4 +79,7 @@ literal_term :: { Class }
 {
 parseError :: [Token] -> a
 parseError _ = error "parse error"
+
+parse :: String -> [Declaration]
+parse = parseTokens . alexScanTokens
 }

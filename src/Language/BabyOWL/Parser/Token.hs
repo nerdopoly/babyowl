@@ -1,9 +1,6 @@
-module Language.BabyOWL.Token (Ident (..), Token (..)) where
+module Language.BabyOWL.Parser.Token (Token (..)) where
 
-newtype Ident = Ident String deriving (Eq)
-
-instance Show Ident where
-    show (Ident s) = '$':s
+import Language.BabyOWL.Data (Ident)
 
 data Token
     = TokenPeriod
