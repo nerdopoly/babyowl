@@ -13,7 +13,7 @@ type TypeCheck = Context -> Result Context
 assert :: Ident -> Type -> TypeCheck
 assert i@(Ident name) t g =
     case Map.lookup i g of
-        Just t' -> if t == t' 
+        Just t' -> if t == t'
                    then return g
                    else Left $ name ++ " is already used as " ++ show t
         Nothing -> return $ Map.insert i t g
