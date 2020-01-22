@@ -15,7 +15,7 @@ assert i@(Ident name) t g =
     case Map.lookup i g of
         Just t' -> if t == t'
                    then return g
-                   else Left $ name ++ " is already used as " ++ show t
+                   else Left $ name ++ " is already used as " ++ show t'
         Nothing -> return $ Map.insert i t g
 
 check :: [Declaration] -> Result Context
