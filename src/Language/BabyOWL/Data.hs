@@ -1,6 +1,7 @@
-module Language.BabyOWL.Data ( Ident (Ident)
-                             , Result
-                             ) where
+module Language.BabyOWL.Data
+    ( Ident (Ident)
+    , Result
+    ) where
 
 newtype Ident = Ident String deriving (Eq,Ord)
 

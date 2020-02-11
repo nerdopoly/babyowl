@@ -1,4 +1,7 @@
-module Language.BabyOWL.Syntax where
+module Language.BabyOWL.Syntax
+    ( Declaration (..)
+    , ClassExp (..)
+    ) where
 
 import Language.BabyOWL.Data (Ident)
 

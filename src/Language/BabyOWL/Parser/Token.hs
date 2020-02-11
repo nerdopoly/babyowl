@@ -23,4 +23,28 @@ data Token
     | TokenThing
     | TokenNothing
     | TokenIdent Ident
-    deriving (Show,Eq)
+    | TokenEOF
+    deriving Eq
+
+instance Show Token where
+    show TokenPeriod       = "'.'"
+    show TokenSubclass     = "'⊑' or '::'"
+    show TokenSubrelation  = "'≤' or '<:'"
+    show TokenOpenParen    = "'('"
+    show TokenCloseParen   = "')'"
+    show TokenComma        = "','"
+    show TokenUnion        = "'⊔' or '|'"
+    show TokenIntersection = "'⊓' or '&'"
+    show TokenExists       = "'∃' or '£'"
+    show TokenForAll       = "'∀' or '@'"
+    show TokenColon        = "':'"
+    show TokenNot          = "'¬'"
+    show TokenInst         = "'inst'"
+    show TokenDisjoint     = "'disjoint'"
+    show TokenFunction     = "'function'"
+    show TokenInverse      = "'inverse'"
+    show TokenTransitive   = "'transitive'"
+    show TokenThing        = "'⊤' or 'Thing'"
+    show TokenNothing      = "'⊥' or 'Nothing'"
+    show (TokenIdent _)    = "identifier"
+    show TokenEOF          = "end of file"
