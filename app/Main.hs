@@ -2,16 +2,16 @@ module Main (main) where
 
 import System.Exit (die)
 
-import Language.BabyOWL.Parser (parseString)
+import Language.BabyOWL.Parser (parse)
 import Language.BabyOWL.Semantics (check)
 
 main :: IO ()
 main = do
     input  <- getContents
-    case parseString input of
+    case parse input of
         Right ast -> do
-            print ast
+            putStrLn $ "AST: " ++ show ast
             case check ast of
-                Right syms -> print syms
+                Right syms -> putStrLn $ "Symbols: " ++ show syms
                 Left err    -> die $ "type error: " ++ err
         Left err  -> die err

@@ -1,24 +1,20 @@
 {
-module Language.BabyOWL.Parser (parseString) where
+module Language.BabyOWL.Parser (parse) where
 
 import Language.BabyOWL.Data (Ident,Result)
 import Language.BabyOWL.Syntax
 
-import Language.BabyOWL.Parser.Data
-    ( PState (..)
-    , initPState
-    , Parser (..)
-    , errorP
-    )
+import Language.BabyOWL.Parser.Data (initPState,P,runP,errorP)
 import Language.BabyOWL.Parser.Token (Token (..))
 import Language.BabyOWL.Parser.Lexer (lexer)
 }
 
-%name parse declarations
-%monad { Parser }
+%name parser declarations
+
+%monad { P }
 %lexer { lexer } { TokenEOF }
 %tokentype { Token }
-%error { parseError }
+%error { syntaxError }
 
 %token
     '.'             { TokenPeriod }
@@ -85,14 +81,9 @@ literal_term :: { ClassExp }
     | '⊥'           { LitNothing }
 
 {
-parseString :: String -> Result [Declaration]
-parseString s =
-    case go . initPState $ s of
-        (Right decls,_) -> Right decls
-        (Left err,PState{posn=posn}) -> Left $ concat [err," at ",show posn]
-    where (P go) = parse
+parse :: String -> Result [Declaration]
+parse = fmap fst . runP parser . initPState
 
-
-parseError :: Token -> Parser a
-parseError = errorP . ("syntax error: unexpected " ++) . show
+syntaxError :: Token -> P a
+syntaxError = errorP . ("syntax error: unexpected " ++) . show
 }
